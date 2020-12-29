@@ -3,15 +3,23 @@ import ReactDOM from 'react-dom'
 
 const Heading = ({ header }) => <h2>{header}</h2>
 
-const Button = ({ text, handleClick }) => {
-  return (
-      <button onClick={handleClick}>{text}</button>
-  )
-}
+const Button = ({ text, handleClick }) => <button onClick={handleClick}>{text}</button>
 
 const Statistic = ({ statName, statValue }) => <p>{statName} {statValue}</p>
 
-
+const Statistics = ({ good, neutral, bad, total, average, positive }) => {
+  return (
+    <>
+      <Statistic statName="good" statValue={good} />
+      <Statistic statName="neutral" statValue={neutral} />
+      <Statistic statName="bad" statValue={bad} />
+      <Statistic statName="total" statValue={total} />
+      <Statistic statName="average" statValue={average} />
+      <Statistic statName="positive" statValue={positive} />
+    </>
+  )
+}
+  
 const App = () => {
   // save clicks of each button to its own state
   const [good, setGood] = useState(0)
@@ -42,34 +50,16 @@ const App = () => {
     return total() === 0 ? '0%' : ((good / total()) * 100) + "%"
   }
 
-  if(total() === 0) {
-    return (
-      <div>
-        <Heading header="give feedback" />
-        <Button handleClick={() => handleGood(good + 1)} text="good" />
-        <Button handleClick={() => handleNeutral(neutral + 1)} text="neutral" />
-        <Button handleClick={() => handleBad(bad + 1)} text="bad" />
-        <Heading header="statistics" />
-        <p>no feedback given</p>
-      </div>
-    )
-  } else {
-    return (
-      <div>
-        <Heading header="give feedback" />
-        <Button handleClick={() => handleGood(good + 1)} text="good" />
-        <Button handleClick={() => handleNeutral(neutral + 1)} text="neutral" />
-        <Button handleClick={() => handleBad(bad + 1)} text="bad" />
-        <Heading header="statistics" />
-        <Statistic statName="good" statValue={good} />
-        <Statistic statName="neutral" statValue={neutral} />
-        <Statistic statName="bad" statValue={bad} />
-        <Statistic statName="total" statValue={total()} />
-        <Statistic statName="average" statValue={average()} />
-        <Statistic statName="positive" statValue={positive()} />
-      </div>
-    )
-  }
+  return (
+    <div>
+      <Heading header="give feedback" />
+      <Button handleClick={() => handleGood(good + 1)} text="good" />
+      <Button handleClick={() => handleNeutral(neutral + 1)} text="neutral" />
+      <Button handleClick={() => handleBad(bad + 1)} text="bad" />
+      <Heading header="statistics" />
+      <Statistics good={good} neutral={neutral} bad={bad} total={total()} average={average()} positive={positive()} />
+    </div>
+  )
 }
 
 ReactDOM.render(<App />, 
