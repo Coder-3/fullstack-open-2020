@@ -29,6 +29,18 @@ const App = () => {
     setBad(badValue)
   }
 
+  const total = () => {
+    return (good + neutral + bad)
+  }
+
+  const average = () => {
+    return  total() === 0 ? 0 : ((good * 1) + (bad * (-1))) / total()
+  }
+
+  const positive = () => {
+    return total() === 0 ? '0%' : ((good / total()) * 100) + "%"
+  }
+
   return (
     <div>
       <Heading header="give feedback" />
@@ -39,6 +51,9 @@ const App = () => {
       <Statistic quality="good" quantity={good} />
       <Statistic quality="neutral" quantity={neutral} />
       <Statistic quality="bad" quantity={bad} />
+      <p>total {total()}</p>
+      <p>average {average()}</p>
+      <p>positive {positive()}</p>
     </div>
   )
 }
