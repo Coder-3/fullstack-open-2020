@@ -9,7 +9,8 @@ const Button = ({ text, handleClick }) => {
   )
 }
 
-const Statistic = ({ quality, quantity }) => <p>{quality} {quantity}</p>
+const Statistic = ({ statName, statValue }) => <p>{statName} {statValue}</p>
+
 
 const App = () => {
   // save clicks of each button to its own state
@@ -48,12 +49,12 @@ const App = () => {
       <Button handleClick={() => handleNeutral(neutral + 1)} text="neutral" />
       <Button handleClick={() => handleBad(bad + 1)} text="bad" />
       <Heading header="statistics" />
-      <Statistic quality="good" quantity={good} />
-      <Statistic quality="neutral" quantity={neutral} />
-      <Statistic quality="bad" quantity={bad} />
-      <p>total {total()}</p>
-      <p>average {average()}</p>
-      <p>positive {positive()}</p>
+      <Statistic statName="good" statValue={good} />
+      <Statistic statName="neutral" statValue={neutral} />
+      <Statistic statName="bad" statValue={bad} />
+      <Statistic statName="total" statValue={total()} />
+      <Statistic statName="average" statValue={average()} />
+      <Statistic statName="positive" statValue={positive()} />
     </div>
   )
 }
