@@ -10,12 +10,29 @@ const Statistic = ({ statName, statValue }) => <p>{statName} {statValue}</p>
 const Statistics = ({ good, neutral, bad, total, average, positive }) => {
   return (
     <>
-      <Statistic statName="good" statValue={good} />
-      <Statistic statName="neutral" statValue={neutral} />
-      <Statistic statName="bad" statValue={bad} />
-      <Statistic statName="total" statValue={total} />
-      <Statistic statName="average" statValue={average} />
-      <Statistic statName="positive" statValue={positive} />
+      <Heading header="statistics" />
+      <table>
+        <tbody>
+          <tr>
+            <td><Statistic statName="good" statValue={good} /></td>
+          </tr>
+          <tr>
+            <td><Statistic statName="neutral" statValue={neutral} /></td>
+          </tr>
+          <tr>
+            <td><Statistic statName="bad" statValue={bad} /></td>
+          </tr>
+          <tr>
+            <td><Statistic statName="total" statValue={total} /></td>
+          </tr>
+          <tr>
+            <td><Statistic statName="average" statValue={average} /></td>
+          </tr>
+          <tr>
+            <td><Statistic statName="positive" statValue={positive} /></td>
+          </tr>
+        </tbody>
+      </table>
     </>
   )
 }
@@ -56,7 +73,6 @@ const App = () => {
       <Button handleClick={() => handleGood(good + 1)} text="good" />
       <Button handleClick={() => handleNeutral(neutral + 1)} text="neutral" />
       <Button handleClick={() => handleBad(bad + 1)} text="bad" />
-      <Heading header="statistics" />
       <Statistics good={good} neutral={neutral} bad={bad} total={total()} average={average()} positive={positive()} />
     </div>
   )
