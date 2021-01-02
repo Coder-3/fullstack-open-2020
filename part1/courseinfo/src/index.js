@@ -1,18 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-const Header = ({ courseName }) => {
-  return (
-    <h1>{courseName}</h1>
-  )
-}
+const Total = ({ courseContent }) => {
+  const sumOfExercises = courseContent.reduce((accumulator, currentValue) => ({exercises: accumulator.exercises + currentValue.exercises}))
 
-// const Total = ({ course }) => {
-//   const sum = course.parts[0].exercises + course.parts[1].exercises + course.parts[2].exercises
-//   return(
-//     <p>Number of exercises {sum}</p>
-//   ) 
-// }
+  return(
+    <p><strong>total of {sumOfExercises.exercises} exercises</strong></p>
+  ) 
+}
 
 const Part = ({ part }) => {
   return (
@@ -30,11 +25,18 @@ const Content = ({ courseContent }) => {
   )
 }
 
+const Header = ({ courseName }) => {
+  return (
+    <h1>{courseName}</h1>
+  )
+}
+
 const Course = ({ course }) => {
   return (
     <>
       <Header courseName={course.name} />
       <Content courseContent={course.parts} />
+      <Total courseContent={course.parts} />
     </>
   )
 }
