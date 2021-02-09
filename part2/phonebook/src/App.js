@@ -24,13 +24,6 @@ const Person = ({ person }) => <p>{person.name} {person.number}</p>
 const App = () => {
 
   const [ persons, setPersons ] = useState([])
-
-  // const [ persons, setPersons ] = useState([
-  //   { name: 'Arto Hellas', number: '040-123456' },
-  //   { name: 'Ada Lovelace', number: '39-44-5323523' },
-  //   { name: 'Dan Abramov', number: '12-43-234345' },
-  //   { name: 'Mary Poppendieck', number: '39-23-6423122' }
-  // ])
   const [ matchingPersons, setMatchingPersons ] = useState([])
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
@@ -55,7 +48,11 @@ const App = () => {
     if(persons.map(person => person.name).includes(newName)) {
       window.alert(`${newName} is already added to phonebook`)
     } else {
-      setPersons(persons.concat(personObject))
+      axios
+      .post('http://localhost:3001/persons', personObject)
+      .then(response => {
+        setPersons(persons.concat(response.data))
+    })
     }
 
     setNewName('')
