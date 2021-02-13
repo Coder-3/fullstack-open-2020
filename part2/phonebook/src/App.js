@@ -41,6 +41,18 @@ const Notification = ({ message }) => {
   )
 }
 
+const ErrorMessage = ({ message }) => {
+  if(message === null) {
+    return null
+  }
+
+  return (
+    <div className="error">
+      {message}
+    </div>
+  )
+}
+
 const App = () => {
 
   const [ persons, setPersons ] = useState([])
@@ -49,6 +61,7 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [ searchedName, setSearchedName ] = useState('')
   const [ successMessage, setSuccessMessage ] = useState(null)
+  const [ errorMessage, setErrorMessage ] = useState(null)
 
   useEffect(() => {
     personsService
@@ -94,6 +107,15 @@ const App = () => {
         .then(response => {
           setPersons(persons.map(person => person.id !== personId ? person : response))
           setSuccessMessage(`Updated ${newName}'s number`)
+          setTimeout(() => {
+            setSuccessMessage(null)
+          }, 5000)
+        })
+        .catch(error => {
+          setErrorMessage(`unable to update ${newName}`)
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
         })
       }
     } else {
@@ -106,9 +128,13 @@ const App = () => {
             setSuccessMessage(null)
           }, 5000)
       })
+      .catch(error => {
+        setErrorMessage(`unable to add ${newName} to phonebook`)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+      })
     }
-
-    
 
     setNewName('')
     setNewNumber('')
@@ -124,7 +150,17 @@ const App = () => {
         .getAll()
         .then(response => {
           setPersons(response)
+          setSuccessMessage(`Deleted ${personName}`)
+          setTimeout(() => {
+            setSuccessMessage(null)
+          }, 5000)
         })
+      })
+      .catch(error => {
+        setErrorMessage(`Information of ${personName} was already removed from the server`)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
       })
     }
   }
@@ -157,6 +193,7 @@ const App = () => {
       <h2>Phonebook</h2>
       
       <Notification message={successMessage} />
+      <ErrorMessage message={errorMessage} />
       <Filter inputValue={searchedName} changeFunction={handleSearch} />
       
       <h2>add a new</h2>
