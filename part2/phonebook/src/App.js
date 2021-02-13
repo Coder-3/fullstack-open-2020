@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import personsService from './services/persons'
+import './index.css'
 
 const Filter = ({ inputValue, changeFunction }) => {
   return (
@@ -28,6 +29,18 @@ const Person = ({ person, onClickFunction }) => {
   )
 }
 
+const Notification = ({ message }) => {
+  if(message === null) {
+    return null
+  }
+
+  return (
+    <div className="success">
+      {message}
+    </div>
+  )
+}
+
 const App = () => {
 
   const [ persons, setPersons ] = useState([])
@@ -35,6 +48,7 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ searchedName, setSearchedName ] = useState('')
+  const [ successMessage, setSuccessMessage ] = useState(null)
 
   useEffect(() => {
     personsService
@@ -79,6 +93,7 @@ const App = () => {
         .updateNumber(personId, personObject)
         .then(response => {
           setPersons(persons.map(person => person.id !== personId ? person : response))
+          setSuccessMessage(`Updated ${newName}'s number`)
         })
       }
     } else {
@@ -86,8 +101,14 @@ const App = () => {
         .create(personObject)
         .then(response => {
           setPersons(persons.concat(response))
+          setSuccessMessage(`Added ${newName}`)
+          setTimeout(() => {
+            setSuccessMessage(null)
+          }, 5000)
       })
     }
+
+    
 
     setNewName('')
     setNewNumber('')
@@ -135,6 +156,7 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       
+      <Notification message={successMessage} />
       <Filter inputValue={searchedName} changeFunction={handleSearch} />
       
       <h2>add a new</h2>
