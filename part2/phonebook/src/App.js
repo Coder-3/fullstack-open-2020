@@ -19,7 +19,14 @@ const PersonForm = ({ onSubmit, nameValue, nameChange, numberValue, numberChange
   )
 }
 
-const Person = ({ person }) => <p>{person.name} {person.number}</p>
+const Person = ({ person, onClickFunction }) => {
+  return (
+    <>
+      <p>{person.name} {person.number}</p>
+      <button onClick={onClickFunction} id={person.id}>delete</button>
+    </>
+  )
+}
 
 const App = () => {
 
@@ -57,6 +64,32 @@ const App = () => {
 
     setNewName('')
     setNewNumber('')
+  }
+  
+  const getPersonName = (personId) => {
+    let thePerson
+    persons.forEach(person => {
+      if(person.id.toString() === personId) {
+        thePerson = person.name
+      }
+    })
+
+    return thePerson
+  }
+
+  const deletePerson = event => {
+    const personName = getPersonName(event.target.id)
+    if(window.confirm(`Delete ${personName} ?`)) {
+      personsService
+      .deletePerson(event.target.id)
+      .then(response => {
+        personsService
+        .getAll()
+        .then(response => {
+          setPersons(response)
+        })
+      })
+    }
   }
 
   const handleNameChange = (event) => {
@@ -98,7 +131,7 @@ const App = () => {
       <h2>Numbers</h2>
 
         {displayNumbers().map(person =>
-          <Person key={person.name} person={person} />
+          <Person key={person.id} person={person} onClickFunction={deletePerson} />
         )}
     </div>
   )
