@@ -44,6 +44,26 @@ const App = () => {
     })
   }, [])
 
+  const getPersonName = personId => {
+    let thePerson
+    persons.forEach(person => {
+      if(person.id.toString() === personId) {
+        thePerson = person.name
+      }
+    })
+    return thePerson
+  }
+
+  const getPersonId = personName => {
+    let thePersonId
+    persons.forEach(person => {
+      if(person.name === personName) {
+        thePersonId = person.id
+      }
+    })
+    return thePersonId
+  }
+
   const addPerson = (event) => {
     event.preventDefault()
     
@@ -53,7 +73,14 @@ const App = () => {
     }
 
     if(persons.map(person => person.name).includes(newName)) {
-      window.alert(`${newName} is already added to phonebook`)
+      if(window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+        const personId = getPersonId(newName)
+        personsService
+        .updateNumber(personId, personObject)
+        .then(response => {
+          setPersons(persons.map(person => person.id !== personId ? person : response))
+        })
+      }
     } else {
       personsService
         .create(personObject)
@@ -64,17 +91,6 @@ const App = () => {
 
     setNewName('')
     setNewNumber('')
-  }
-  
-  const getPersonName = (personId) => {
-    let thePerson
-    persons.forEach(person => {
-      if(person.id.toString() === personId) {
-        thePerson = person.name
-      }
-    })
-
-    return thePerson
   }
 
   const deletePerson = event => {
